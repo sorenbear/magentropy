@@ -1,5 +1,7 @@
 '''Contains functions used for argument validation.'''
 
+from __future__ import annotations
+
 from typing import Union, Optional, Sequence, Any, get_args
 from copy import deepcopy
 

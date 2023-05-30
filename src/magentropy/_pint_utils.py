@@ -1,5 +1,7 @@
 '''Contains convenience functions for working with Pint.'''
 
+from __future__ import annotations
+
 from typing import Optional, Sequence
 
 import numpy as np

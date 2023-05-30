@@ -1,5 +1,7 @@
 '''Contains functions to group data by field or temperature.'''
 
+from __future__ import annotations
+
 from typing import Union, Optional
 
 import numpy as np

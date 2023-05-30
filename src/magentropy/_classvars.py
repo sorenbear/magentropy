@@ -1,5 +1,7 @@
 '''Contains some class variables so as to not clutter magentro.py.'''
 
+from __future__ import annotations
+
 import numpy as np
 
 # Order is important! Treat all as ordered dicts.

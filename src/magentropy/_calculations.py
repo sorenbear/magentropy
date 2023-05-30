@@ -2,6 +2,8 @@
 Contains functions used for simulation, smoothing, interpolation, differentiation, and integration.
 '''
 
+from __future__ import annotations
+
 from typing import Union
 
 import numpy as np
