@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Union, Optional, TypedDict, Literal
 from numpy.random import Generator, BitGenerator, SeedSequence
-from numpy.typing import ArrayLike, _ArrayLikeInt_co
+from numpy.typing import ArrayLike
 from pandas._typing import FilePath, ReadCsvBuffer
 
 __all__ = [
@@ -15,7 +15,7 @@ __all__ = [
 
 ReadCsvFile = Union[FilePath, ReadCsvBuffer[bytes], ReadCsvBuffer[str]]
 
-RngSeed = Optional[Union[_ArrayLikeInt_co, SeedSequence, BitGenerator, Generator]]
+RngSeed = Optional[Union[ArrayLike, SeedSequence, BitGenerator, Generator]]
 
 GriddataMethod = Literal['linear', 'nearest', 'cubic']
 
