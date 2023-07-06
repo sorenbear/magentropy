@@ -11,7 +11,7 @@ description = 'Perform magnetoentropic mapping of magnetic materials based on DC
 readme = 'README.md'
 requires-python = '>=3.9'
 license = { file = 'LICENSE' }
-authors = [{ name = 'Soren Bear', email = 'sbear@ucsb.edu' }]
+authors = [{ name = 'Soren Bear', email = 'sorenbear@berkeley.edu' }]
 keywords = [
     'magentropy',
     'magnetoentropy',
