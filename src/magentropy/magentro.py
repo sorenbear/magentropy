@@ -2366,9 +2366,9 @@ class MagentroData:
                 ax = plt.figure().subplots()
                 try:
                     self.plot_lines(prop, version, ax)
+                    axes_list.append(ax)
                 except MissingDataError:
                     pass
-                axes_list.append(ax)
 
         at_temps_dict = {
             'raw': self._five_temps(self.raw_df, self._RAW_DF_COLUMNS),
@@ -2390,9 +2390,9 @@ class MagentroData:
                         at_temps=at_temps_dict[version],
                         colorbar=True
                     )
+                    axes_list.append(ax)
                 except MissingDataError:
                     pass
-                axes_list.append(ax)
 
     @staticmethod
     def _five_temps(df: pd.DataFrame, cols: ColumnDataDict) -> NDArray[np.float64]:
@@ -2419,6 +2419,6 @@ class MagentroData:
                 ax = plt.figure().subplots()
                 try:
                     self.plot_map(prop, version, ax)
+                    axes_list.append(ax)
                 except MissingDataError:
                     pass
-                axes_list.append(ax)
