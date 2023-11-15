@@ -1839,16 +1839,6 @@ class MagentroData:
                 'Please run process_data() first.'
             )
 
-        if (
-            data_version == 'processed'
-            and data_prop == 'M_per_mass_err'
-            and self._processed_df.loc[:, 'M_per_mass_err'].isna().all()
-            ):
-            raise MissingDataError(
-                'M_per_mass_err processed is not computed until bootstrap() is run.'
-                'Please run bootstrap() first.'
-            )
-
         return data_prop, data_version
 
     def _grouping_plotting_cases(
@@ -2364,11 +2354,8 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                try:
-                    self.plot_lines(prop, version, ax)
-                    axes_list.append(ax)
-                except MissingDataError:
-                    pass
+                self.plot_lines(prop, version, ax)
+                axes_list.append(ax)
 
         at_temps_dict = {
             'raw': self._five_temps(self.raw_df, self._RAW_DF_COLUMNS),
@@ -2382,17 +2369,8 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                try:
-                    self.plot_lines(
-                        prop,
-                        version,
-                        ax,
-                        at_temps=at_temps_dict[version],
-                        colorbar=True
-                    )
-                    axes_list.append(ax)
-                except MissingDataError:
-                    pass
+                self.plot_lines(prop, version, ax, at_temps=at_temps_dict[version], colorbar=True)
+                axes_list.append(ax)
 
     @staticmethod
     def _five_temps(df: pd.DataFrame, cols: ColumnDataDict) -> NDArray[np.float64]:
@@ -2417,8 +2395,5 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                try:
-                    self.plot_map(prop, version, ax)
-                    axes_list.append(ax)
-                except MissingDataError:
-                    pass
+                self.plot_map(prop, version, ax)
+                axes_list.append(ax)
