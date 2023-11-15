@@ -1444,8 +1444,8 @@ class MagentroData:
         '''
         Perform the differentiation and integration on the raw data.
 
-        Computes raw ``'dM_dT'`` and ``'Delta_SM'`` by interpolating raw values onto a
-        regularly-spaced grid with (npoints * total temp range / temp range)
+        Computes raw ``'dM_dT'`` and ``'Delta_SM'`` by interpolating raw values
+        onto a regularly-spaced grid with (npoints * total temp range / temp range)
         temps and zero field plus the determined fields, taking the derivative
         and integral, and interpolating back to the original points.
         '''
@@ -1695,7 +1695,7 @@ class MagentroData:
 
         Parameters
         ----------
-        data_prop : {'M_per_mass', 'dM_dT', 'Delta_SM'}, default 'M_per_mass'
+        data_prop : {'M_per_mass', 'M_per_mass_err', 'dM_dT', 'Delta_SM'}, default 'M_per_mass'
             The property to plot.
         data_version : {'raw', 'converted', 'processed', 'compare'}, default 'raw'
             The version of the data to plot. If ``'compare'``, converted and
@@ -1742,7 +1742,7 @@ class MagentroData:
             and the |Colorbar|.
         '''
 
-        data_prop, data_version = self._check_prop_version(data_prop, data_version)
+        data_prop, data_version = self._check_prop_and_version(data_prop, data_version)
 
         last_presets = self.last_presets
         if last_presets is None:
@@ -1798,7 +1798,7 @@ class MagentroData:
 
         return ax, cbar
 
-    def _check_prop_version(
+    def _check_prop_and_version(
         self,
         data_prop: DataProp,
         data_version: PlotDataVersion
@@ -1825,16 +1825,28 @@ class MagentroData:
 
         if data_version in ['processed', 'compare'] and len(self._processed_df) == 0:
             raise MissingDataError(
-                f'argument {data_version} is invalid because processed_df is empty. '
+                f'Argument {data_version} is invalid because processed_df is empty. '
                 'Please run process_data() before plotting.'
             )
 
-        if (data_version in ['raw', 'converted', 'compare'] and
-            data_prop in ['dM_dT', 'Delta_SM'] and
-            len(self._processed_df) == 0):
+        if (
+            data_version in ['raw', 'converted', 'compare']
+            and data_prop in ['dM_dT', 'Delta_SM']
+            and len(self._processed_df) == 0
+            ):
             raise MissingDataError(
                 f'{data_prop} {data_version} is not computed until process_data() is run.'
                 'Please run process_data() first.'
+            )
+
+        if (
+            data_version == 'processed'
+            and data_prop == 'M_per_mass_err'
+            and self._processed_df.loc[:, 'M_per_mass_err'].isna().all()
+            ):
+            raise MissingDataError(
+                'M_per_mass_err processed is not computed until bootstrap() is run.'
+                'Please run bootstrap() first.'
             )
 
         return data_prop, data_version
@@ -2099,7 +2111,7 @@ class MagentroData:
 
         # check arguments
 
-        data_prop, data_version = self._check_prop_version(data_prop, data_version)
+        data_prop, data_version = self._check_prop_and_version(data_prop, data_version)
 
         if data_version == 'compare':
             raise ValueError('compare is not available for maps.')
@@ -2145,7 +2157,7 @@ class MagentroData:
 
         Parameters
         ----------
-        data_prop : {'M_per_mass', 'dM_dT', 'Delta_SM'}, default 'M_per_mass'
+        data_prop : {'M_per_mass', 'M_per_mass_err', 'dM_dT', 'Delta_SM'}, default 'M_per_mass'
             The property to plot.
         data_version : {'raw', 'converted', 'processed'}, default 'raw'
             The version of the data to plot.
@@ -2169,8 +2181,8 @@ class MagentroData:
             If ``True``, center the pixel values around zero, setting values
             beyond the central range to the values at the boundaries of the
             range. This is helpful for ignoring extreme values. ``None``
-            defaults to ``False`` when `data_prop` is ``'M_per_mass'`` and
-            ``True`` otherwise.
+            defaults to ``False`` when `data_prop` is ``'M_per_mass'`` or
+            ``'M_per_mass_err'`` and ``True`` otherwise.
         contour : bool, default False
             If ``True``, add contours to the plot with |Axes.contour|.
         colorbar : bool, default True
@@ -2194,7 +2206,7 @@ class MagentroData:
 
         # check arguments
 
-        data_prop, data_version = self._check_prop_version(data_prop, data_version)
+        data_prop, data_version = self._check_prop_and_version(data_prop, data_version)
 
         if data_version == 'compare':
             raise ValueError('compare is not available for maps.')
@@ -2352,7 +2364,10 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                self.plot_lines(prop, version, ax)
+                try:
+                    self.plot_lines(prop, version, ax)
+                except MissingDataError:
+                    pass
                 axes_list.append(ax)
 
         at_temps_dict = {
@@ -2367,7 +2382,16 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                self.plot_lines(prop, version, ax, at_temps=at_temps_dict[version], colorbar=True)
+                try:
+                    self.plot_lines(
+                        prop,
+                        version,
+                        ax,
+                        at_temps=at_temps_dict[version],
+                        colorbar=True
+                    )
+                except MissingDataError:
+                    pass
                 axes_list.append(ax)
 
     @staticmethod
@@ -2393,5 +2417,8 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                self.plot_map(prop, version, ax)
+                try:
+                    self.plot_map(prop, version, ax)
+                except MissingDataError:
+                    pass
                 axes_list.append(ax)
