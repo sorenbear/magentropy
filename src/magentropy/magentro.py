@@ -1444,8 +1444,8 @@ class MagentroData:
         '''
         Perform the differentiation and integration on the raw data.
 
-        Computes raw ``'dM_dT'`` and ``'Delta_SM'`` by interpolating raw values onto a
-        regularly-spaced grid with (npoints * total temp range / temp range)
+        Computes raw ``'dM_dT'`` and ``'Delta_SM'`` by interpolating raw values
+        onto a regularly-spaced grid with (npoints * total temp range / temp range)
         temps and zero field plus the determined fields, taking the derivative
         and integral, and interpolating back to the original points.
         '''
@@ -2364,7 +2364,10 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                self.plot_lines(prop, version, ax)
+                try:
+                    self.plot_lines(prop, version, ax)
+                except MissingDataError:
+                    pass
                 axes_list.append(ax)
 
         at_temps_dict = {
@@ -2379,7 +2382,16 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                self.plot_lines(prop, version, ax, at_temps=at_temps_dict[version], colorbar=True)
+                try:
+                    self.plot_lines(
+                        prop,
+                        version,
+                        ax,
+                        at_temps=at_temps_dict[version],
+                        colorbar=True
+                    )
+                except MissingDataError:
+                    pass
                 axes_list.append(ax)
 
     @staticmethod
@@ -2405,5 +2417,8 @@ class MagentroData:
         for prop in available_props:
             for version in available_versions:
                 ax = plt.figure().subplots()
-                self.plot_map(prop, version, ax)
+                try:
+                    self.plot_map(prop, version, ax)
+                except MissingDataError:
+                    pass
                 axes_list.append(ax)
