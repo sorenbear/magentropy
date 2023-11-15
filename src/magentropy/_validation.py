@@ -320,7 +320,7 @@ def check_map_args(
     ax = check_axes(ax)
 
     if center is None:
-        center = (data_prop != 'M_per_mass')
+        center = (data_prop not in ['M_per_mass', 'M_per_mass_err'])
     else:
         center = bool(center)
 

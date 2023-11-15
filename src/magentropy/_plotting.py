@@ -34,6 +34,8 @@ OFFSET_FMT_STR: str = ', offset by {offset}'
 
 UNITS_FMT_STR = '$\\left({units_str}\\right)$'
 
+M_ERR_STR = '$\\sigma_M$'
+
 PLOT_DEFAULTS = {
     'dot_marker': '.',
     'compare_marker': '.',
@@ -71,6 +73,11 @@ PLOT_DEFAULTS = {
     'M_per_mass_raw_title': f'Raw Moment $M$ {UNITS_FMT_STR}',
     'M_per_mass_converted_title': f'Converted Moment $M$ {UNITS_FMT_STR}',
     'M_per_mass_processed_title': f'Processed Moment $M$ {UNITS_FMT_STR}',
+
+    'M_per_mass_err_ylabel': f'{M_ERR_STR} {UNITS_FMT_STR}',
+    'M_per_mass_err_raw_title': f'Raw Moment Error {M_ERR_STR} {UNITS_FMT_STR}',
+    'M_per_mass_err_converted_title': f'Converted Moment Error {M_ERR_STR} {UNITS_FMT_STR}',
+    'M_per_mass_err_processed_title': f'Processed Moment Error {M_ERR_STR} {UNITS_FMT_STR}',
 
     'dM_dT_ylabel': f'd$M$/d$T$ {UNITS_FMT_STR}',
     'dM_dT_raw_title': f'Raw Derivative d$M$/d$T$ {UNITS_FMT_STR}',

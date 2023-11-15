@@ -27,7 +27,7 @@ ToMinimizeStr = Literal['gcv', 'std', 'err']
 
 PlotType = Literal['lines', 'map']
 
-DataProp = Literal['M_per_mass', 'dM_dT', 'Delta_SM']
+DataProp = Literal['M_per_mass', 'M_per_mass_err', 'dM_dT', 'Delta_SM']
 
 PlotDataVersion = Literal['raw', 'converted', 'processed', 'compare']
 
