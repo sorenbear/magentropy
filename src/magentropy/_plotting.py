@@ -428,6 +428,10 @@ def _colorbar_lines(
         len(tick_labels)
     )
 
+    # tell colorbar which Axes to steal from (see Figure.colorbar() docs for ax vs. cax)
+    if colorbar_kwargs.get('cax') is None:
+        colorbar_kwargs['ax'] = colorbar_kwargs.get('ax', ax)
+
     cbar = ax.get_figure().colorbar(
         mpl.cm.ScalarMappable(norm=colorbar_norm, cmap=cmap),
         **colorbar_kwargs
