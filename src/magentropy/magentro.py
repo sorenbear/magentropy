@@ -1946,7 +1946,7 @@ class MagentroData:
             for i in group_dict[key]:
                 converted_groups[i] = converted_key
 
-        return df.groupby(converted_groups)
+        return df.groupby(converted_groups, group_keys=False)
 
     def _apply_convert_grouped(self, da: pd.DataFrame) -> pd.DataFrame:
         '''For use in :meth:`DataFrameGroupBy.apply`.'''

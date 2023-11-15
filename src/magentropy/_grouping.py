@@ -110,7 +110,8 @@ def group_by(
 
     # perform the groupby based on which values are closest to a group
     grouped_by = df.copy().groupby(
-        lambda x: unique_groups[abs(unique_groups - df.loc[:, group_col].loc[x]).argmin()]
+        lambda x: unique_groups[abs(unique_groups - df.loc[:, group_col].loc[x]).argmin()],
+        group_keys=False
     )
 
     if match_col is not None and match_values is not None:
@@ -125,7 +126,8 @@ def group_by(
             grps
         )
         grouped_by = df.groupby(
-            lambda x: unique_groups[abs(unique_groups - df.loc[:, group_col].loc[x]).argmin()]
+            lambda x: unique_groups[abs(unique_groups - df.loc[:, group_col].loc[x]).argmin()],
+            group_keys=False
         )
 
     return grouped_by
